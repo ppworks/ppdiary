@@ -19,5 +19,8 @@
   "devDependencies": {
     "@biomejs/biome": "^2.2.2",
     "tsdown": "^0.14.2"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.4"
   }
 }
