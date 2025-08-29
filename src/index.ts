@@ -6,7 +6,7 @@ import { setupTools } from "./tools/index.js";
 async function main() {
   const server = new McpServer({
     name: "ppdiary",
-    version: "1.0.0",
+    version: "1.0.1",
     description: "Personal diary management system - ppdiary",
   });
 

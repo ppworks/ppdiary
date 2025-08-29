@@ -73,7 +73,7 @@ describe("MCP Server", () => {
 
     expect(MockMcpServer).toHaveBeenCalledWith({
       name: "ppdiary",
-      version: "1.0.0",
+      version: "1.0.1",
       description: "Personal diary management system - ppdiary",
     });
 
