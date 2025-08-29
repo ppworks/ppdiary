@@ -10,11 +10,12 @@ export default defineConfig({
       reporter: ["text", "json", "html"],
       exclude: [
         "node_modules/",
-        "dist/",
+        "bin/",
         "**/*.config.ts",
         "**/*.config.js",
         "**/context/**",
         "**/generated/**",
+        "src/db/",
       ],
     },
   },

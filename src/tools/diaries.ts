@@ -2,7 +2,10 @@ import { asc, count, desc, eq, like, or } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "../db/index.js";
 import { diaryEntries } from "../db/schema.js";
-import { formatToolError, formatToolResponse } from "../formatter/mcp-response";
+import {
+  formatToolError,
+  formatToolResponse,
+} from "../formatter/mcp-response.js";
 
 export const getDiaryListSchema = z.object({
   query: z.string().optional().describe("Search query"),
@@ -21,18 +24,29 @@ export function getDiaryList(args: z.infer<typeof getDiaryListSchema>) {
   try {
     const { query, order = "desc", page = 1, perPage = 10 } = args;
 
-    // Build base query for filtering
-    let baseQuery = db.select().from(diaryEntries);
-    let countQuery = db.select({ count: count() }).from(diaryEntries);
+    const baseQuery = query
+      ? db
+          .select()
+          .from(diaryEntries)
+          .where(
+            or(
+              like(diaryEntries.title, `%${query}%`),
+              like(diaryEntries.content, `%${query}%`),
+            ),
+          )
+      : db.select().from(diaryEntries);
 
-    if (query) {
-      const whereClause = or(
-        like(diaryEntries.title, `%${query}%`),
-        like(diaryEntries.content, `%${query}%`),
-      );
-      baseQuery = baseQuery.where(whereClause);
-      countQuery = countQuery.where(whereClause);
-    }
+    const countQuery = query
+      ? db
+          .select({ count: count() })
+          .from(diaryEntries)
+          .where(
+            or(
+              like(diaryEntries.title, `%${query}%`),
+              like(diaryEntries.content, `%${query}%`),
+            ),
+          )
+      : db.select({ count: count() }).from(diaryEntries);
 
     // Get total count
     const totalCount = countQuery.get()?.count || 0;

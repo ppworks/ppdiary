@@ -12,7 +12,7 @@ import {
   getDiarySchema,
   updateDiary,
   updateDiarySchema,
-} from "./diaries";
+} from "./diaries.js";
 
 export function setupTools(server: McpServer): void {
   server.registerTool(
