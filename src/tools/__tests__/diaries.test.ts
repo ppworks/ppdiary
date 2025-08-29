@@ -1,4 +1,5 @@
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
+import { eq, sql } from "drizzle-orm";
 import { beforeEach, describe, expect, it } from "vitest";
 import { db } from "../../db/index.js";
 import { diaryEntries } from "../../db/schema.js";
@@ -177,6 +178,17 @@ describe("Diaries Tool", () => {
       });
       const createdParsed = parseResult(created);
 
+      // Update the created record to have an older timestamp
+      db.update(diaryEntries)
+        .set({ updatedAt: sql`datetime('now', '-1 minute')` })
+        .where(eq(diaryEntries.id, createdParsed.id))
+        .run();
+      const beforeUpdatedAt = db
+        .select()
+        .from(diaryEntries)
+        .where(eq(diaryEntries.id, createdParsed.id))
+        .get()?.updatedAt;
+
       const result = updateDiary({
         id: createdParsed.id,
         title: "Updated Title",
@@ -190,7 +202,7 @@ describe("Diaries Tool", () => {
         title: "Updated Title",
         content: "Updated content",
       });
-      expect(parsed.updatedAt).not.toBe(createdParsed.updatedAt);
+      expect(parsed.updatedAt).not.toBe(beforeUpdatedAt);
     });
 
     it("should return error for non-existent diary", () => {

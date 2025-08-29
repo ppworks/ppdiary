@@ -1,4 +1,4 @@
-import { asc, count, desc, eq, like, or } from "drizzle-orm";
+import { asc, count, desc, eq, like, or, sql } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "../db/index.js";
 import { diaryEntries } from "../db/schema.js";
@@ -130,7 +130,7 @@ export function updateDiary(args: z.infer<typeof updateDiarySchema>) {
     const { id, title, content } = args;
     const result = db
       .update(diaryEntries)
-      .set({ title, content, updatedAt: new Date().toISOString() })
+      .set({ title, content, updatedAt: sql`(datetime('now'))` })
       .where(eq(diaryEntries.id, id))
       .returning()
       .get();
