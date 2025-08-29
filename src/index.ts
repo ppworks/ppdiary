@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { setupTools } from "./tools/index.js";
 
 async function main() {
   const server = new McpServer({
@@ -8,6 +9,7 @@ async function main() {
     version: "1.0.0",
   });
 
+  setupTools(server);
   const transport = new StdioServerTransport();
 
   transport.onclose = () => {
