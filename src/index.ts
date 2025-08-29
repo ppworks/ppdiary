@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import packageJson from "../package.json" with { type: "json" };
 import { setupTools } from "./tools/index.js";
 
 async function main() {
   const server = new McpServer({
     name: "ppdiary",
-    version: "1.0.1",
+    version: packageJson.version,
     description: "Personal diary management system - ppdiary",
   });
 

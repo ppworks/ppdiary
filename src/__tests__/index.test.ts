@@ -2,6 +2,7 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import type { MockInstance } from "vitest";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import packageJson from "../../package.json" with { type: "json" };
 
 describe("MCP Server", () => {
   let consoleErrorSpy: MockInstance<typeof console.error>;
@@ -73,7 +74,7 @@ describe("MCP Server", () => {
 
     expect(MockMcpServer).toHaveBeenCalledWith({
       name: "ppdiary",
-      version: "1.0.1",
+      version: packageJson.version,
       description: "Personal diary management system - ppdiary",
     });
 
