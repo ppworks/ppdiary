@@ -22,6 +22,7 @@
     "tsdown": "^0.14.2"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.17.4"
+    "@modelcontextprotocol/sdk": "^1.17.4",
+    "zod": "^3.25.76"
   }
 }
