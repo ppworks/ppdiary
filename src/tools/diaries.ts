@@ -130,7 +130,11 @@ export function updateDiary(args: z.infer<typeof updateDiarySchema>) {
     const { id, title, content } = args;
     const result = db
       .update(diaryEntries)
-      .set({ title, content, updatedAt: sql`(datetime('now'))` })
+      .set({
+        title,
+        content,
+        updatedAt: sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
+      })
       .where(eq(diaryEntries.id, id))
       .returning()
       .get();
