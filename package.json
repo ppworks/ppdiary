@@ -19,6 +19,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.2.2",
     "@types/node": "^24.3.0",
+    "drizzle-kit": "^0.31.4",
     "tsdown": "^0.14.2"
   },
   "dependencies": {
