@@ -7,6 +7,7 @@ async function main() {
   const server = new McpServer({
     name: "ppdiary",
     version: "1.0.0",
+    description: "Personal diary management system - ppdiary",
   });
 
   setupTools(server);

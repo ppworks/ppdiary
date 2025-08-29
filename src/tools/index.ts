@@ -19,7 +19,7 @@ export function setupTools(server: McpServer): void {
     "ppdiary_list_diary",
     {
       title: "Get diaries list",
-      description: "Get all diaries or filter by query",
+      description: "Get all diaries or filter by query from ppdiary",
       inputSchema: getDiaryListSchema.shape,
     },
     async (params: z.infer<typeof getDiaryListSchema>) => getDiaryList(params),
@@ -29,7 +29,7 @@ export function setupTools(server: McpServer): void {
     "ppdiary_get_diary",
     {
       title: "Get a diary",
-      description: "Get a diary from ID",
+      description: "Get a diary from ID from ppdiary",
       inputSchema: getDiarySchema.shape,
     },
     async (params: z.infer<typeof getDiarySchema>) => getDiary(params),
@@ -39,7 +39,7 @@ export function setupTools(server: McpServer): void {
     "ppdiary_create_diary",
     {
       title: "Create a diary",
-      description: "Create a diary",
+      description: "Create a diary from ppdiary",
       inputSchema: createDiarySchema.shape,
     },
     async (params: z.infer<typeof createDiarySchema>) => createDiary(params),
@@ -49,7 +49,7 @@ export function setupTools(server: McpServer): void {
     "ppdiary_update_diary",
     {
       title: "Update a diary",
-      description: "Update a diary by ID",
+      description: "Update a diary by ID from ppdiary",
       inputSchema: updateDiarySchema.shape,
     },
     async (params: z.infer<typeof updateDiarySchema>) => updateDiary(params),
@@ -59,7 +59,7 @@ export function setupTools(server: McpServer): void {
     "ppdiary_delete_diary",
     {
       title: "Delete a diary",
-      description: "Delete a diary by ID",
+      description: "Delete a diary by ID from ppdiary",
       inputSchema: deleteDiarySchema.shape,
     },
     async (params: z.infer<typeof deleteDiarySchema>) => deleteDiary(params),
