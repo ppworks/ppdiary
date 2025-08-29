@@ -1,4 +1,4 @@
-import { asc, desc, eq, like, or } from "drizzle-orm";
+import { asc, count, desc, eq, like, or } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "../db/index.js";
 import { diaryEntries } from "../db/schema.js";
@@ -21,26 +21,39 @@ export function getDiaryList(args: z.infer<typeof getDiaryListSchema>) {
   try {
     const { query, order = "desc", page = 1, perPage = 10 } = args;
 
-    let dbQuery = db.select().from(diaryEntries);
+    // Build base query for filtering
+    let baseQuery = db.select().from(diaryEntries);
+    let countQuery = db.select({ count: count() }).from(diaryEntries);
 
     if (query) {
-      dbQuery = dbQuery.where(
-        or(
-          like(diaryEntries.title, `%${query}%`),
-          like(diaryEntries.content, `%${query}%`),
-        ),
+      const whereClause = or(
+        like(diaryEntries.title, `%${query}%`),
+        like(diaryEntries.content, `%${query}%`),
       );
+      baseQuery = baseQuery.where(whereClause);
+      countQuery = countQuery.where(whereClause);
     }
 
-    dbQuery = dbQuery.orderBy(
-      order === "desc"
-        ? desc(diaryEntries.createdAt)
-        : asc(diaryEntries.createdAt),
-    );
-    dbQuery = dbQuery.limit(perPage).offset((page - 1) * perPage);
+    // Get total count
+    const totalCount = countQuery.get()?.count || 0;
 
-    const diaries = dbQuery.all();
-    return formatToolResponse(diaries);
+    // Get paginated results
+    const diaries = baseQuery
+      .orderBy(
+        order === "desc"
+          ? desc(diaryEntries.createdAt)
+          : asc(diaryEntries.createdAt),
+      )
+      .limit(perPage)
+      .offset((page - 1) * perPage)
+      .all();
+
+    return formatToolResponse({
+      diaries,
+      totalCount,
+      page,
+      perPage,
+    });
   } catch (error) {
     return formatToolError(error);
   }
