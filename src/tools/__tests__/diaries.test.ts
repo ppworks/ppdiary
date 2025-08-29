@@ -35,7 +35,6 @@ describe("Diaries Tool", () => {
   beforeEach(() => {
     db.delete(diaryEntries).run();
   });
-
   describe("createDiary", () => {
     it("should create a new diary entry", () => {
       const result = createDiary({

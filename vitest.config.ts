@@ -5,6 +5,9 @@ export default defineConfig({
     globals: false,
     environment: "node",
     include: ["**/__tests__/**/*.{test,spec}.{js,ts,jsx,tsx}"],
+    env: {
+      DATABASE_URL: ":memory:",
+    },
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "html"],
