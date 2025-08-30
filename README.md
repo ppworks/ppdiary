@@ -1,29 +1,29 @@
-# ppdiary - MCP Server だけで書ける日記
+# ppdiary - A Diary System Powered by MCP Server
 
-ppdiary は Model Context Protocol (MCP) を使用した日記管理システムです。MCP サーバーとして動作し、Claude などのクライアントから日記の作成・管理が可能です。
+ppdiary is a diary management system built on the Model Context Protocol (MCP). Operating as an MCP server, it enables diary creation and management through MCP-compatible clients like Claude.
 
-## コンセプト
+## Concept
 
-「MCP Server だけで書ける日記」というコンセプトのもと、シンプルな日記管理機能を提供します。SQLite をベースに、ローカルで完全に動作する軽量な日記システムです。
+Built with the concept of "A diary system that works exclusively through MCP Server", it provides simple yet powerful diary management capabilities. This lightweight system runs entirely locally using SQLite for data persistence.
 
-## 機能
+## Features
 
-- 📝 日記の作成・編集・削除
-- 🔍 キーワード検索
-- 📄 ページネーション対応
-- 🗄️ SQLite による永続化
-- 🐳 Docker 対応
+- 📝 Create, edit, and delete diary entries
+- 🔍 Full-text keyword search
+- 📄 Pagination support
+- 🗄️ Local SQLite database storage
+- 🐳 Docker containerization
 
-## 必要要件
+## Requirements
 
-- Node.js 24.7.0 以上（ローカルインストールの場合）
-- Docker（Docker を使用する場合）
+- Node.js 24.7.0 or higher (for local installation)
+- Docker (if using Docker)
 
-## MCP クライアント設定
+## MCP Client Configuration
 
-### Claude Desktop の設定例
+### Claude Desktop Configuration
 
-Claude Desktop の設定ファイル（`claude_desktop_config.json`）に以下を追加します：
+Add the following to your Claude Desktop configuration file (`claude_desktop_config.json`):
 
 ```json
 {
@@ -43,14 +43,14 @@ Claude Desktop の設定ファイル（`claude_desktop_config.json`）に以下�
 }
 ```
 
-**重要**:
-- `/Users/your-name/` の部分を実際のユーザー名に置き換えてください
-- `ppdiary-data` ディレクトリは自動的に作成されます
-- このディレクトリに SQLite データベースファイルが保存されます
+**Important**:
+- Replace `/Users/your-name/` with your actual username
+- The `ppdiary-data` directory will be created automatically
+- SQLite database files will be saved in this directory
 
-### タイムゾーン設定
+### Timezone Configuration
 
-日記の日時表示をローカルタイムゾーンにするには、`TZ` 環境変数を設定できます：
+To display diary timestamps in your local timezone, set the `TZ` environment variable:
 
 ```json
 {
@@ -75,114 +75,113 @@ Claude Desktop の設定ファイル（`claude_desktop_config.json`）に以下�
 }
 ```
 
-設定しない場合はUTCで表示されます。日時はISO 8601形式でタイムゾーンオフセット付き（例：`2025-08-29T21:30:00+09:00`）で表示されます。
+Without configuration, timestamps default to UTC. All dates follow ISO 8601 format with timezone offset (e.g., `2025-08-29T21:30:00+09:00`).
 
+## Usage
 
-## 使い方
+With ppdiary configured in Claude Desktop, you can perform these operations:
 
-Claude Desktop で ppdiary が設定されていれば、以下のような操作が可能です：
-
-### 日記を書く
+### Write a Diary Entry
 ```
-「ppdiaryに今日の日記を書きたい」
-「タイトル：素晴らしい一日、内容：今日は...という日記を作成して」
-```
-
-### 日記を検索
-```
-「ppdiaryから"旅行"というキーワードで日記を検索して」
-「最近の日記を10件表示して」
+"I want to write today's diary in ppdiary"
+"Create a diary entry with title: Wonderful Day, content: Today was..."
 ```
 
-### 日記を読む
+### Search Diary Entries
 ```
-「ppdiaryで、ID: xxx の日記を表示して」
-```
-
-### 日記を編集
-```
-「ppdiaryで、ID: xxx の日記のタイトルを変更して」
+"Search for diary entries with the keyword 'travel' in ppdiary"
+"Show me the 10 most recent diary entries"
 ```
 
-### 日記を削除
+### Read a Diary Entry
 ```
-「ppdiaryの、ID: xxx の日記を削除して」
+"Show me the diary entry with ID: xxx in ppdiary"
 ```
 
-## API リファレンス
+### Edit a Diary Entry
+```
+"Change the title of diary entry ID: xxx in ppdiary"
+```
 
-ppdiary は以下の MCP ツールを提供します：
+### Delete a Diary Entry
+```
+"Delete the diary entry with ID: xxx in ppdiary"
+```
 
-| ツール名 | 説明 | パラメータ |
-|---------|------|------------|
-| `get_diary_list` | 日記一覧を取得 | `query?`, `order?`, `page?`, `perPage?` |
-| `get_diary` | 特定の日記を取得 | `id` |
-| `create_diary` | 新しい日記を作成 | `title`, `content` |
-| `update_diary` | 日記を更新 | `id`, `title`, `content` |
-| `delete_diary` | 日記を削除 | `id` |
+## API Reference
 
-## データの保存場所
+ppdiary provides the following MCP tools:
 
-- **Docker 使用時**: マウントしたボリューム（例：`~/ppdiary-data/`）
-- **ローカル実行時**: プロジェクトディレクトリ内の `data/` フォルダ
+| Tool Name | Description | Parameters |
+|-----------|-------------|------------|
+| `get_diary_list` | Retrieve list of diary entries | `query?`, `order?`, `page?`, `perPage?` |
+| `get_diary` | Fetch a specific diary entry | `id` |
+| `create_diary` | Create a new diary entry | `title`, `content` |
+| `update_diary` | Update an existing diary entry | `id`, `title`, `content` |
+| `delete_diary` | Delete a diary entry | `id` |
 
-データベースファイル（`diary.db`）は SQLite 形式で保存されます。
+## Data Storage Location
 
-## 開発
+- **When using Docker**: Mounted volume (e.g., `~/ppdiary-data/`)
+- **When running locally**: `data/` folder in the project directory
 
-### 開発環境のセットアップ
+The database file (`diary.db`) is saved in SQLite format.
+
+## Development
+
+### Development Environment Setup
 
 ```bash
-# 依存関係のインストール
+# Install dependencies
 npm install
 
-# テストの実行
+# Run tests
 npm test
 
-# カバレッジ付きテスト
+# Run tests with coverage
 npm run test:coverage
 
-# リント
+# Lint
 npm run lint
 
-# 型チェック
+# Type check
 npm run type-check
 ```
 
-### ビルド
+### Build
 
 ```bash
 npm run build
 ```
 
-### Docker イメージのビルド
+### Build Docker Image
 
 ```bash
 docker build -t ppdiary .
 ```
 
-## トラブルシューティング
+## Troubleshooting
 
-### データベースファイルが見つからない
-- Docker 使用時はボリュームマウントのパスが正しいか確認してください
-- 権限の問題がないか確認してください
+### Database File Not Found
+- When using Docker, verify that the volume mount path is correct
+- Check for file system permission issues
 
-### MCP サーバーが起動しない
-- Node.js のバージョンが 24.7.0 以上であることを確認してください
-- Docker の場合、コンテナが正常に起動しているか確認してください
+### MCP Server Won't Start
+- Ensure Node.js version is 24.7.0 or higher
+- For Docker, verify that the container is running correctly
 
-## ライセンス
+## License
 
 MIT
 
-## 作者
+## Author
 
 [@ppworks](https://github.com/ppworks)
 
-## コントリビューション
+## Contributions
 
-Issue や Pull Request は歓迎します！
+Issues and Pull Requests are welcome!
 
-## サポート
+## Support
 
-問題や質問がある場合は、[GitHub Issues](https://github.com/ppworks/ppdiary/issues) でお知らせください。
+If you encounter any issues or have questions, please report them on [GitHub Issues](https://github.com/ppworks/ppdiary/issues).
