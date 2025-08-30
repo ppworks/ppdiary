@@ -2,6 +2,7 @@ import { asc, count, desc, eq, like, or, sql } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "../db/index.js";
 import { diaryEntries } from "../db/schema.js";
+import { formatDiaryDates } from "../formatter/date-formatter.js";
 import {
   formatToolError,
   formatToolResponse,
@@ -63,7 +64,7 @@ export function getDiaryList(args: z.infer<typeof getDiaryListSchema>) {
       .all();
 
     return formatToolResponse({
-      diaries,
+      diaries: diaries.map(formatDiaryDates),
       totalCount,
       page,
       perPage,
@@ -90,7 +91,7 @@ export function getDiary(args: z.infer<typeof getDiarySchema>) {
       return formatToolError(new Error("Diary not found"));
     }
 
-    return formatToolResponse(diary);
+    return formatToolResponse(formatDiaryDates(diary));
   } catch (error) {
     return formatToolError(error);
   }
@@ -113,7 +114,7 @@ export function createDiary(args: z.infer<typeof createDiarySchema>) {
       .returning()
       .get();
 
-    return formatToolResponse(result);
+    return formatToolResponse(formatDiaryDates(result));
   } catch (error) {
     return formatToolError(error);
   }
@@ -143,7 +144,7 @@ export function updateDiary(args: z.infer<typeof updateDiarySchema>) {
       return formatToolError(new Error("Diary not found"));
     }
 
-    return formatToolResponse(result);
+    return formatToolResponse(formatDiaryDates(result));
   } catch (error) {
     return formatToolError(error);
   }
@@ -166,7 +167,7 @@ export function deleteDiary(args: z.infer<typeof deleteDiarySchema>) {
       return formatToolError(new Error("Diary not found"));
     }
 
-    return formatToolResponse(result);
+    return formatToolResponse(formatDiaryDates(result));
   } catch (error) {
     return formatToolError(error);
   }

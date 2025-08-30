@@ -48,6 +48,35 @@ Claude Desktop の設定ファイル（`claude_desktop_config.json`）に以下�
 - `ppdiary-data` ディレクトリは自動的に作成されます
 - このディレクトリに SQLite データベースファイルが保存されます
 
+### タイムゾーン設定
+
+日記の日時表示をローカルタイムゾーンにするには、`TZ` 環境変数を設定できます：
+
+```json
+{
+  "mcpServers": {
+    "ppdiary": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-v",
+        "/Users/your-name/ppdiary-data:/app/data",
+        "-e",
+        "TZ",
+        "ghcr.io/ppworks/ppdiary:latest"
+      ],
+      "env": {
+        "TZ": "Asia/Tokyo"
+      }
+    }
+  }
+}
+```
+
+設定しない場合はUTCで表示されます。日時はISO 8601形式でタイムゾーンオフセット付き（例：`2025-08-29T21:30:00+09:00`）で表示されます。
+
 
 ## 使い方
 
