@@ -43,6 +43,15 @@ Add the following to your Claude Desktop configuration file (`claude_desktop_con
 }
 ```
 
+## Claude CLI
+
+```bash
+claude mcp add ppdiary --scope user --env TZ=Asia/Tokyo -- \
+  docker run -i --rm -e TZ -v /Users/your-name/ppdiary-data:/app/data ghcr.io/ppworks/ppdiary:latest
+```
+
+## Option
+
 **Important**:
 - Replace `/Users/your-name/` with your actual username
 - The `ppdiary-data` directory will be created automatically
@@ -169,6 +178,9 @@ docker build -t ppdiary .
 ### MCP Server Won't Start
 - Ensure Node.js version is 24.7.0 or higher
 - For Docker, verify that the container is running correctly
+
+### Docker Image Not Updating
+Add `--pull always` to the docker run command to force pulling the latest image.
 
 ## License
 
