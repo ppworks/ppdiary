@@ -6,6 +6,29 @@ ppdiary is a diary management system built on the Model Context Protocol (MCP). 
 
 Built with the concept of "A diary system that works exclusively through MCP Server", it provides simple yet powerful diary management capabilities. This lightweight system runs entirely locally using SQLite for data persistence.
 
+## Why ppdiary? - The Zero UI Philosophy
+
+ppdiary represents a paradigm shift in personal software design. In an era where every app demands your attention with complex interfaces, ppdiary takes a radically different approach:
+
+**No UI. No app. No website. Just conversation.**
+
+This is what we call the **Zero UI Philosophy** - software that exists purely through natural language interaction with AI assistants. You don't "use" ppdiary; you simply talk about your day with Claude, and your diary writes itself.
+
+### AI-Native Design
+
+Unlike traditional apps with AI features bolted on, ppdiary was designed from the ground up for the AI era:
+
+- **Invisible by design** - No cognitive overhead of learning a new interface
+- **Context-aware** - Your AI assistant understands intent, not just commands  
+- **Naturally integrated** - Diary writing happens within your existing AI workflow
+- **Locally stored** - Your data stays on your machine with SQLite
+
+### The Future of Personal Software
+
+ppdiary isn't just a diary - it's a glimpse into the future where personal software dissolves into conversation. No more app switching, no more UI friction, just natural interaction with an AI that understands you.
+
+**This is what AI-native software looks like.**
+
 ## Features
 
 - 📝 Create, edit, and delete diary entries
@@ -14,16 +37,57 @@ Built with the concept of "A diary system that works exclusively through MCP Ser
 - 🗄️ Local SQLite database storage
 - 🐳 Docker containerization
 
+## Who is this for?
+
+ppdiary is designed for:
+- **Developers and tech enthusiasts** comfortable with Docker and command-line tools
+- **Privacy-conscious users** who want full control over their personal data
+- **AI early adopters** exploring new paradigms of human-computer interaction
+- **Minimalists** seeking distraction-free journaling without traditional apps
+
+## Limitations & Considerations
+
+### Zero UI Trade-offs
+While revolutionary, the Zero UI approach has limitations:
+- **No visual browsing** - You must know what you're looking for
+- **AI interpretation required** - Natural language can sometimes be ambiguous
+- **No rich media** - Text-only entries (no images, drawings, or formatting)
+- **Learning curve** - Requires familiarity with conversational AI patterns
+
+### MCP Protocol Status
+- **Experimental technology** - MCP is new and evolving
+- **Limited client support** - Currently only works with Claude Desktop and compatible clients
+- **API changes possible** - Future updates may require adjustments
+
+### Security & Privacy Notes
+
+While ppdiary prioritizes local storage:
+- **Unencrypted SQLite** - Database is stored in plain text (no encryption at rest)
+- **File system dependent** - Security relies on your OS file permissions
+- **Docker volume access** - Anyone with Docker access can read the database
+- **No authentication** - No user accounts or access control
+
+**⚠️ Important**: For sensitive diary entries, consider additional encryption layers or secure your system appropriately.
+
 ## Requirements
 
 - Node.js 24.7.0 or higher (for local installation)
 - Docker (if using Docker)
 
-## MCP Client Configuration
+## Installation with Claude CLI
+
+```bash
+claude mcp add ppdiary --scope user --env TZ=Asia/Tokyo -- \
+  docker run -i --rm -e TZ -v ~/ppdiary-data:/app/data ghcr.io/ppworks/ppdiary:latest
+```
+
+Adjust `TZ=Asia/Tokyo` to your timezone.
+
+## Manual Configuration
 
 ### Claude Desktop Configuration
 
-Add the following to your Claude Desktop configuration file (`claude_desktop_config.json`):
+If you prefer manual configuration, add the following to your Claude Desktop configuration file (`claude_desktop_config.json`):
 
 ```json
 {
@@ -35,7 +99,7 @@ Add the following to your Claude Desktop configuration file (`claude_desktop_con
         "-i",
         "--rm",
         "-v",
-        "/Users/your-name/ppdiary-data:/app/data",
+        "/Users/USERNAME/ppdiary-data:/app/data",
         "ghcr.io/ppworks/ppdiary:latest"
       ]
     }
@@ -43,48 +107,12 @@ Add the following to your Claude Desktop configuration file (`claude_desktop_con
 }
 ```
 
-## Claude CLI
-
-```bash
-claude mcp add ppdiary --scope user --env TZ=Asia/Tokyo -- \
-  docker run -i --rm -e TZ -v /Users/your-name/ppdiary-data:/app/data ghcr.io/ppworks/ppdiary:latest
-```
-
-## Option
-
 **Important**:
-- Replace `/Users/your-name/` with your actual username
+- Replace `USERNAME` with your actual username
 - The `ppdiary-data` directory will be created automatically
 - SQLite database files will be saved in this directory
 
-### Timezone Configuration
-
-To display diary timestamps in your local timezone, set the `TZ` environment variable:
-
-```json
-{
-  "mcpServers": {
-    "ppdiary": {
-      "command": "docker",
-      "args": [
-        "run",
-        "-i",
-        "--rm",
-        "-v",
-        "/Users/your-name/ppdiary-data:/app/data",
-        "-e",
-        "TZ",
-        "ghcr.io/ppworks/ppdiary:latest"
-      ],
-      "env": {
-        "TZ": "Asia/Tokyo"
-      }
-    }
-  }
-}
-```
-
-Without configuration, timestamps default to UTC. All dates follow ISO 8601 format with timezone offset (e.g., `2025-08-29T21:30:00+09:00`).
+To add timezone support, include the `TZ` environment variable in the `env` section (e.g., `"TZ": "Asia/Tokyo"`). Without configuration, timestamps default to UTC.
 
 ## Usage
 
@@ -131,7 +159,7 @@ ppdiary provides the following MCP tools:
 
 ## Data Storage Location
 
-- **When using Docker**: Mounted volume (e.g., `~/ppdiary-data/`)
+- **When using Docker**: Mounted volume (e.g., `/Users/USERNAME/ppdiary-data/` on macOS)
 - **When running locally**: `data/` folder in the project directory
 
 The database file (`diary.db`) is saved in SQLite format.
@@ -180,7 +208,11 @@ docker build -t ppdiary .
 - For Docker, verify that the container is running correctly
 
 ### Docker Image Not Updating
-Add `--pull always` to the docker run command to force pulling the latest image.
+Add `--pull always` to the docker run command to force pulling the latest image:
+
+```bash
+docker run -i --rm --pull always -v ~/ppdiary-data:/app/data ghcr.io/ppworks/ppdiary:latest
+```
 
 ## License
 
