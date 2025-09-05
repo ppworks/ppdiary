@@ -4,11 +4,6 @@ updates:
   directory: "/"
   schedule:
     interval: daily
-  groups:
-    artifact-actions:
-      patterns:
-        - "actions/upload-artifact"
-        - "actions/download-artifact"
 - package-ecosystem: npm
   directory: "/"
   schedule:
