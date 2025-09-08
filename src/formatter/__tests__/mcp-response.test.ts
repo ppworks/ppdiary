@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { formatToolError, formatToolResponse } from "../mcp-response.js";
+import {
+  formatPromptError,
+  formatPromptResponse,
+  formatToolError,
+  formatToolResponse,
+} from "../mcp-response.js";
 
 describe("response formatters", () => {
   describe("formatToolResponse", () => {
@@ -9,6 +14,21 @@ describe("response formatters", () => {
 
       expect(result.content[0].type).toBe("text");
       expect(result.content[0].text).toBe(JSON.stringify(data, null, 2));
+    });
+  });
+
+  describe("formatPromptResponse", () => {
+    it("should format message as user role content", () => {
+      const message = "This is a prompt message";
+      const result = formatPromptResponse(message);
+
+      expect(result.messages[0]).toEqual({
+        role: "user",
+        content: {
+          type: "text",
+          text: message,
+        },
+      });
     });
   });
 });
@@ -43,5 +63,9 @@ describe("error formatters", () => {
     expect(result).toHaveProperty("content");
     expect(Array.isArray(result.content)).toBe(true);
     expect(result.content[0].type).toBe("text");
+
+    const promptResult = formatPromptError(error);
+    expect(promptResult).toHaveProperty("messages");
+    expect(promptResult.messages[0].role).toBe("user");
   });
 });

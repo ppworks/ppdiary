@@ -31,6 +31,7 @@ describe("MCP Server", () => {
     const MockMcpServer = vi.fn().mockReturnValue(mockServer);
     const MockStdioServerTransport = vi.fn().mockReturnValue(mockTransport);
     const mockSetupTools = vi.fn();
+    const mockSetupPrompts = vi.fn();
 
     vi.doMock("@modelcontextprotocol/sdk/server/mcp.js", () => ({
       McpServer: MockMcpServer,
@@ -41,8 +42,16 @@ describe("MCP Server", () => {
     vi.doMock("../tools/index.js", () => ({
       setupTools: mockSetupTools,
     }));
+    vi.doMock("../prompts/index.js", () => ({
+      setupPrompts: mockSetupPrompts,
+    }));
 
-    return { MockMcpServer, MockStdioServerTransport, mockSetupTools };
+    return {
+      MockMcpServer,
+      MockStdioServerTransport,
+      mockSetupTools,
+      mockSetupPrompts,
+    };
   };
 
   beforeEach(() => {
@@ -65,10 +74,8 @@ describe("MCP Server", () => {
     const mockServer = createMockServer();
     const mockTransport = createMockTransport();
 
-    const { MockMcpServer, mockSetupTools } = setupServerMocks(
-      mockServer,
-      mockTransport,
-    );
+    const { MockMcpServer, mockSetupTools, mockSetupPrompts } =
+      setupServerMocks(mockServer, mockTransport);
 
     await import("../index.js");
 
@@ -79,6 +86,7 @@ describe("MCP Server", () => {
     });
 
     expect(mockSetupTools).toHaveBeenCalledWith(mockServer);
+    expect(mockSetupPrompts).toHaveBeenCalledWith(mockServer);
     expect(mockServer.connect).toHaveBeenCalled();
   });
 
