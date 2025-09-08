@@ -23,7 +23,13 @@ jobs:
       - name: Create data directory
         run: mkdir -p data
       - name: Run linting
-        run: npm run lint
+        run: |
+          output=$(npm run lint 2>&1)
+          echo "$output"
+          if echo "$output" | grep -q "schema version does not match"; then
+            echo "::error::Biome schema version mismatch detected. Please run 'npx biome migrate --write' to update biome.json"
+            exit 1
+          fi
       - name: Run type checking
         run: npm run type-check
       - name: Run tests
