@@ -1,6 +1,6 @@
 {
   "name": "ppdiary",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A diary management system using Model Context Protocol (MCP) - write and manage your diary through MCP servers",
   "keywords": [
     "mcp",

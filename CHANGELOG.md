@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v1.2.0] - 2025-09-08
+
+### Added
+- Prompts support with extract diary functionality
+- Comprehensive tests for prompt functionality
+- Dependabot configuration for automated dependency updates
+- tsconfig.build.json to exclude test files from production build
+
+### Changed
+- Updated dependencies:
+  - @biomejs/biome from 2.2.2 to 2.2.3
+  - @modelcontextprotocol/sdk from 1.17.4 to 1.17.5
+  - @types/node from 24.3.0 to 24.3.1
+  - actions/setup-node from 4.4.0 to 5.0.0 in GitHub Actions
+- Migrated Biome configuration to latest schema
+- Improved GitHub Actions workflows with digest-based action references for security
+- Enhanced README documentation
 
 ## [v1.1.0] - 2025-08-30
 
@@ -21,17 +38,17 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - updatedAt format issue
 
-## v1.0.2 - 2025-08-29
+## [v1.0.2] - 2025-08-29
 
 ### Fixed
 - Migration issues
 
-## v1.0.1 - 2025-08-29
+## [v1.0.1] - 2025-08-29
 
 ### Fixed
 - Migration issues
 
-## v1.0.0 - 2025-08-29
+## [v1.0.0] - 2025-08-29
 
 ### Added
 - Initial release of ppdiary MCP server
