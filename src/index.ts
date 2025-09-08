@@ -2,6 +2,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import packageJson from "../package.json" with { type: "json" };
+import { setupPrompts } from "./prompts/index.js";
 import { setupTools } from "./tools/index.js";
 
 async function main() {
@@ -12,6 +13,8 @@ async function main() {
   });
 
   setupTools(server);
+  setupPrompts(server);
+
   const transport = new StdioServerTransport();
 
   transport.onclose = () => {

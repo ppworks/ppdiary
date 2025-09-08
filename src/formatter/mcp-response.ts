@@ -1,4 +1,7 @@
-import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
+import type {
+  CallToolResult,
+  GetPromptResult,
+} from "@modelcontextprotocol/sdk/types.js";
 
 function formatErrorText(error: unknown): string {
   return error instanceof Error
@@ -21,12 +24,40 @@ export function formatToolResponse(data: unknown): CallToolResult {
   };
 }
 
+export function formatPromptResponse(message: string): GetPromptResult {
+  return {
+    messages: [
+      {
+        role: "user",
+        content: {
+          type: "text",
+          text: message,
+        },
+      },
+    ],
+  };
+}
+
 export function formatToolError(error: unknown): CallToolResult {
   return {
     content: [
       {
         type: "text",
         text: formatErrorText(error),
+      },
+    ],
+  };
+}
+
+export function formatPromptError(error: unknown): GetPromptResult {
+  return {
+    messages: [
+      {
+        role: "user",
+        content: {
+          type: "text",
+          text: formatErrorText(error),
+        },
       },
     ],
   };
